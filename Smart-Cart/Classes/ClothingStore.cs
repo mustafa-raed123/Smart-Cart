@@ -6,10 +6,54 @@ using System.Threading.Tasks;
 
 namespace Smart_Cart.Classes
 {
-    public class ClothingStore  : ShoppingCart
+    internal class ClothingStore  :Shop
     {
-        public  List<Product> StartShopInClothingStore() => StartShop((ProductCategory.Clothing));
 
+        List<Product> ClotheItems;
+        public override void DisplayPruduct()
+        {
+            ClotheItems = ProductGenerator.Products(ProductCategory.Clothing); // To get 30 item randomly 
+
+
+            for (int i = 0; i < ClotheItems.Count; i++)
+            {
+                Console.Write($"    {i + 1}-{ClotheItems[i].Name} : ${ClotheItems[i].Price}\t\t");
+                if ((i + 1) % 3 == 0) Console.WriteLine("\n");
+            }
+            Console.WriteLine();
+        }
+
+        public override Product SelectedPruduct(ShoppingCart cart)
+        {
+            Console.WriteLine("Enter Enter product number to add to cart, or 0 to go back:");
+            bool IsCurrect = int.TryParse(Console.ReadLine(), out int choice);
+            while (true)
+            {
+                if (IsCurrect)
+                {
+                    if (choice > 0 && choice <= ClotheItems.Count)
+                    {
+                        Product product = ClotheItems[choice - 1];
+                        Console.WriteLine(product.Name);
+                        return product;
+                    }
+                    else
+                    {
+                        break;
+                    }
+
+
+                }
+                else
+                {
+                    Console.WriteLine("PLease Enter the Number");
+                    continue;
+                }
+            }
+            return null;
+
+
+        }
 
     }
 }
